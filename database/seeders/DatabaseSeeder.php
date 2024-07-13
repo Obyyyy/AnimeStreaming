@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             AnimeSeeder::class,
         ]);
 
-        $this->call(CommentSeeder::class);
+        $this->call([
+            CommentSeeder::class,
+            FollowSeeder::class,
+        ]);
     }
 }

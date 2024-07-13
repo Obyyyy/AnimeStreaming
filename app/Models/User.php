@@ -52,7 +52,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function comments(): HasMany {
+    public function comments(): HasMany
+    {
         return $this->hasMany(Comment::class, 'user_id', 'id');
+    }
+
+    public function followedAnimes()
+    {
+        return $this->belongsToMany(Anime::class, 'anime_user');
     }
 }

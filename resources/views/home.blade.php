@@ -62,13 +62,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            @foreach ($trendingAnimes as $trendingAnime)
+                            @foreach ($trendingAnimes as $anime)
                                 <div class="col-lg-4 col-md-6 col-sm-6">
                                     <div class="product__item">
-                                        <div class="product__item__pic set-bg"
-                                            data-setbg="img/{{ $trendingAnime->image }}">
+                                        <div class="product__item__pic set-bg" data-setbg="img/{{ $anime->image }}">
                                             <div class="ep">18 / 18</div>
-                                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
+                                            <div class="comment"><i class="fa fa-comments"></i>
+                                                {{ $anime->comments->count() }}</div>
                                             <div class="view"><i class="fa fa-eye"></i> 9141</div>
                                         </div>
                                         <div class="product__item__text">
@@ -77,7 +77,7 @@
                                                 <li>Movie</li>
                                             </ul>
                                             <h5><a
-                                                    href="{{ route('anime.detail', with(['anime' => $trendingAnime->slug])) }}">{{ $trendingAnime->title }}</a>
+                                                    href="{{ route('anime.detail', with(['anime' => $anime->slug])) }}">{{ $anime->title }}</a>
                                             </h5>
                                         </div>
                                     </div>
@@ -104,7 +104,8 @@
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg" data-setbg="img/{{ $anime->image }}">
                                             <div class="ep">18 / 18</div>
-                                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
+                                            <div class="comment"><i class="fa fa-comments"></i>
+                                                {{ $anime->comments->count() }}</div>
                                             <div class="view"><i class="fa fa-eye"></i> 9141</div>
                                         </div>
                                         <div class="product__item__text">
@@ -135,21 +136,22 @@
                             </div>
                         </div>
                         <div class="row">
-                            @foreach ($recentlyAnimes as $recent)
+                            @foreach ($recentlyAnimes as $anime)
                                 <div class="col-lg-4 col-md-6 col-sm-6">
                                     <div class="product__item">
-                                        <div class="product__item__pic set-bg" data-setbg="img/{{ $recent->image }}">
+                                        <div class="product__item__pic set-bg" data-setbg="img/{{ $anime->image }}">
                                             <div class="ep">18 / 18</div>
-                                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
+                                            <div class="comment"><i class="fa fa-comments"></i>
+                                                {{ $anime->comments->count() }}</div>
                                             <div class="view"><i class="fa fa-eye"></i> 9141</div>
                                         </div>
                                         <div class="product__item__text">
                                             <ul>
-                                                <li>{{ $recent->genres }}</li>
+                                                <li>{{ $anime->genres }}</li>
                                                 <li>Movie</li>
                                             </ul>
                                             <h5><a
-                                                    href="{{ route('anime.detail', with(['anime' => $recent->slug])) }}">{{ $recent->title }}</a>
+                                                    href="{{ route('anime.detail', with(['anime' => $anime->slug])) }}">{{ $anime->title }}</a>
                                             </h5>
                                         </div>
                                     </div>
@@ -176,7 +178,8 @@
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg" data-setbg="img/{{ $anime->image }}">
                                             <div class="ep">18 / 18</div>
-                                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
+                                            <div class="comment"><i class="fa fa-comments"></i>
+                                                {{ $anime->comments->count() }}</div>
                                             <div class="view"><i class="fa fa-eye"></i> 9141</div>
                                         </div>
                                         <div class="product__item__text">
