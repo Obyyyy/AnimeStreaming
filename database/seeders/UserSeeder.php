@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Obyy',
             'email' => 'obyy@gmail.com',
-            'password' => '$2y$12$dtl.qKD27mkFJaj1GKT6KOdZ.PVM/QbpLmE78oRFze2qItUH/DnlC',
+            'password' => '$2y$12$6Gqri8dRNuokSIN6MeUhR.OuUl622q98O6x75.5kloqoAYbzvvtPy',
         ]);
 
         User::factory(20)->create();

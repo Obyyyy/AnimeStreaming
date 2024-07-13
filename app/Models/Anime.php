@@ -31,7 +31,13 @@ class Anime extends Model
     //     'comments',
     // ];
 
-    public function comments(): HasMany {
+    public function comments(): HasMany
+    {
         return $this->hasMany(Comment::class, 'anime_id', 'id');
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'anime_user');
     }
 }

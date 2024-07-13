@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{ route('home') }}"><i class="fa fa-home"></i> Home</a>
                         <a href="./categories.html">Categories</a>
                         <span>Romance</span>
                     </div>
@@ -57,7 +57,24 @@
                                 </div>
                             </div>
                             <div class="anime__details__btn">
-                                <a href="#" class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
+                                @if (Auth::user()->followedAnimes->contains($anime->id))
+                                    <form id="unfollowForm" action="{{ route('anime.unfollow', $anime->slug) }}"
+                                        method="POST">
+                                        @csrf
+                                    </form>
+                                    <a href="#"
+                                        onclick="document.getElementById('unfollowForm').submit(); return false;"
+                                        class="follow-btn" style="background: #9e2323; color:#e9d6d6;"><i
+                                            class="fa fa-heart"></i> Followed</a>
+                                @else
+                                    <form id="followForm" action="{{ route('anime.follow', $anime->slug) }}"
+                                        method="POST">
+                                        @csrf
+                                    </form>
+                                    <a href="#"
+                                        onclick="document.getElementById('followForm').submit(); return false;"
+                                        class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
+                                @endif
                                 <a href="anime-watching.html" class="watch-btn"><span>Watch Now</span> <i
                                         class="fa fa-angle-right"></i></a>
                             </div>
@@ -88,8 +105,10 @@
                         <div class="section-title">
                             <h5>Your Comment</h5>
                         </div>
-                        <form action="#">
-                            <textarea placeholder="Your Comment"></textarea>
+                        <form action="{{ route('anime.add.comment', with(['anime' => $anime->slug])) }}"
+                            method="POST">
+                            @csrf
+                            <textarea placeholder="Your Comment" name="comment"></textarea>
                             <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
                         </form>
                     </div>
@@ -104,7 +123,9 @@
                                 data-setbg="{{ asset('img/' . $anime->image . '') }}">
                                 <div class="ep">18 / ?</div>
                                 <div class="view"><i class="fa fa-eye"></i> 9141</div>
-                                <h5><a href="#">{{ $anime->title }}</a></h5>
+                                <h5><a
+                                        href="{{ route('anime.detail', with(['anime' => $anime->slug])) }}">{{ $anime->title }}</a>
+                                </h5>
                             </div>
                         @endforeach
                     </div>

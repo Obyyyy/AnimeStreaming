@@ -67,6 +67,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'profile_image' => fake()->randomElement(['comment-1.jpg', 'comment-2.jpg', 'comment-3.jpg', 'comment-4.jpg']),
         ]);
     }
 }
