@@ -30,6 +30,7 @@ class AnimeFactory extends Factory
             'genres' => fake()->randomElement(['Action', 'Adventure', 'Fantasy', 'Magic', 'Romance']),
             'duration' => '24',
             'quality' => fake()->randomElement(['HD', 'Camera', 'Full HD', 'BD']),
+            // 'total_views' => fake()->numberBetween(0, 50000),
         ];
     }
 }

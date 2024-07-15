@@ -7,7 +7,7 @@ use App\Models\Anime;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class FollowSeeder extends Seeder
+class ViewsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,12 +17,6 @@ class FollowSeeder extends Seeder
         $users = User::all();
         $animes = Anime::all();
 
-        // foreach ($users as $user)
-        // {
-        //     $user->followedAnimes()->attach(
-        //         $animes->random(5)->pluck('id')->toArray()
-        //     );
-        // }
         foreach ($users as $user)
         {
             $animesToAttach = $animes->random(5)->pluck('id')->toArray();
@@ -37,7 +31,7 @@ class FollowSeeder extends Seeder
                 ];
             }
 
-            $user->followedAnimes()->attach($pivotData);
+            $user->viewedAnimes()->attach($pivotData);
         }
     }
 }
