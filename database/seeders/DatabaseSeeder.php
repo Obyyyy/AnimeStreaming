@@ -4,10 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\User;
-use App\Models\Anime;
-use App\Models\Comment;
-use App\Models\Episode;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\AnimeSeeder;
@@ -22,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AnimeSeeder::class,
+            GenreSeeder::class,
         ]);
 
         $this->call([
@@ -29,6 +26,7 @@ class DatabaseSeeder extends Seeder
             FollowSeeder::class,
             ViewsSeeder::class,
             EpisodeSeeder::class,
+            AnimeGenreSeeder::class,
         ]);
     }
 }

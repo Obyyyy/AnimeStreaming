@@ -59,10 +59,14 @@
                                     <li><a href="./categories.html">Categories <span
                                                 class="arrow_carrot-down"></span></a>
                                         <ul class="dropdown">
-                                            <li><a href="./categories.html">Romance</a></li>
-                                            <li><a href="./categories.html">Adventure </a></li>
-                                            <li><a href="./categories.html">Magic</a></li>
-                                            <li><a href="./categories.html">Fantasy</a></li>
+                                            {{-- @php
+                                                $genres = $genres ?? []; // Ensure genres is an array
+                                            @endphp --}}
+                                            @foreach ($genres as $genre)
+                                                <li><a
+                                                        href="{{ route('anime.by.genres', $genre->slug) }}">{{ $genre->name }}</a>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </li>
                                 </ul>

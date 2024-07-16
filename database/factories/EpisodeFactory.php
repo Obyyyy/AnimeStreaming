@@ -21,7 +21,7 @@ class EpisodeFactory extends Factory
         return [
             'anime_id' => Anime::factory(),
             'episode_name' => 1,
-            'video' => fake()->randomElement(['1.mp4', '2.mp4']),
+            'video' => fake()->randomElement(['1.mp4', '2.mp4', 'Zomrap.mp4', 'zeta.mp4']),
             'thumbnail' => fake()->randomElement(['thumbnail-1.jpg', 'thumbnail-2.jpg', 'thumbnail-3.jpg']),
         ];
     }

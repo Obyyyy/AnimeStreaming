@@ -113,6 +113,7 @@
                                     </span>
                                 @enderror --}}
                             </div>
+                            <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
                             <button type="submit" class="site-btn">Login Now</button>
                         </form>
                         <a href="#" class="forget_pass">Forgot Your Password?</a>

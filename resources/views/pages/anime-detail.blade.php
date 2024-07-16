@@ -47,7 +47,13 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
-                                            <li><span>Genre:</span> {{ $anime->genres }}</li>
+                                            <li><span>Genre:</span>
+                                                @foreach ($anime->genres as $genre)
+                                                    {{ $genre->name }}@if (!$loop->last)
+                                                        ,
+                                                    @endif
+                                                @endforeach
+                                            </li>
 
                                             <li><span>Duration:</span> {{ $anime->duration }} min/ep</li>
                                             <li><span>Quality:</span> {{ $anime->quality }}</li>
@@ -61,6 +67,7 @@
                                     <form id="followForm" action="{{ route('anime.follow', $anime->slug) }}"
                                         method="POST">
                                         @csrf
+                                        <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
                                     </form>
                                     <a href="#"
                                         onclick="document.getElementById('followForm').submit(); return false;"
@@ -116,6 +123,7 @@
                         <form action="{{ route('anime.add.comment', with(['anime' => $anime->slug])) }}"
                             method="POST">
                             @csrf
+                            <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
                             <textarea placeholder="Your Comment" name="comment"></textarea>
                             <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
                         </form>

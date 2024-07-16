@@ -30,7 +30,8 @@ class Anime extends Model
 
     protected $with = [
         'comments',
-        'viewers'
+        'viewers',
+        'episodes',
     ];
 
     public function comments(): HasMany
@@ -51,5 +52,10 @@ class Anime extends Model
     public function episodes(): HasMany
     {
         return $this->hasMany(Episode::class, 'anime_id', 'id');
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'anime_genre');
     }
 }
