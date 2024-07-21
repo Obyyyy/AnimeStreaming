@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
 use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
 
@@ -27,7 +29,6 @@ class User extends Authenticatable
     // protected $with = [
     //     'comments',
     // ];
-
 
     /**
      * The attributes that should be hidden for serialization.
@@ -65,5 +66,11 @@ class User extends Authenticatable
     public function viewedAnimes()
     {
         return $this->belongsToMany(Anime::class, 'anime_user_views');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // return str_ends_with($this->email, '@admin.com') && $this->hasVerifiedEmail();
+        return true;
     }
 }

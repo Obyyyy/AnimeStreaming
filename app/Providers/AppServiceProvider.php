@@ -21,10 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // View::share('categories', Genre::all());
+        View::share('genres', Genre::all());
 
-        View::composer('*', function ($view) {
-            $view->with('genres', Genre::all());
-        });
+        // View::composer('*', function ($view) {
+        //     $view->with('genres', Genre::all());
+        // });
     }
 }

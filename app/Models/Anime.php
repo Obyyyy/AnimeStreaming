@@ -22,16 +22,15 @@ class Anime extends Model
         "studios",
         "date_aired",
         "status",
-        "genres",
         "duration",
         "quality",
-        "total_views",
     ];
 
     protected $with = [
         'comments',
         'viewers',
         'episodes',
+        'genres',
     ];
 
     public function comments(): HasMany
