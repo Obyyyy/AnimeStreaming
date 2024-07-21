@@ -6,9 +6,10 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="{{ route('home') }}"><i class="fa fa-home"></i> Home</a>
-                        <a href="./categories.html">Categories</a>
-                        <a href="#">{{ $anime->genres }}</a>
-                        <span>{{ $anime->title }}</span>
+                        {{-- <a href="./categories.html">Categories</a> --}}
+                        {{-- <a href="#">{{ $anime->genres }}</a> --}}
+                        <span><a href="{{ route('anime.detail', $anime->slug) }}">{{ $anime->title }}</a></span>
+                        <span>Episode {{ $currentEpisode }}</span>
                     </div>
                 </div>
             </div>
@@ -49,7 +50,7 @@
                         @foreach ($anime->comments as $comment)
                             <div class="anime__review__item">
                                 <div class="anime__review__item__pic">
-                                    <img src="img/anime/review-1.jpg" alt="">
+                                    <img src="{{ asset('img/' . $comment->user->profile_image . '') }}" alt="">
                                 </div>
                                 <div class="anime__review__item__text">
                                     <h6>{{ $comment->user->name }} -
@@ -67,7 +68,9 @@
                         <form action="{{ route('anime.add.comment', with(['anime' => $anime->slug])) }}"
                             method="POST">
                             @csrf
-                            <textarea placeholder="Your Comment"></textarea>
+                            <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
+                            <input type="hidden" name="watching" value="{{ $currentEpisode }}">
+                            <textarea placeholder="Your Comment" name="comment"></textarea>
                             <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
                         </form>
                     </div>

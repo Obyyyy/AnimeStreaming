@@ -89,7 +89,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="popular__product">
+                    {{-- <div class="popular__product">
                         <div class="row">
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                 <div class="section-title">
@@ -129,7 +129,7 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="recent__product">
                         <div class="row">
                             <div class="col-lg-8 col-md-8 col-sm-8">
@@ -223,7 +223,8 @@
                         @foreach ($forYouAnimes as $anime)
                             <div class="product__sidebar__comment__item">
                                 <div class="product__sidebar__comment__item__pic">
-                                    <img src="img/comment-1.jpg" alt="">
+                                    <img src="{{ asset('img/' . $anime->image . '') }}" alt=""
+                                        style="width:90px; height:auto;">
                                 </div>
                                 <div class="product__sidebar__comment__item__text">
                                     <ul>
@@ -234,7 +235,7 @@
                                     <h5><a
                                             href="{{ route('anime.detail', with(['anime' => $anime->slug])) }}">{{ $anime->title }}</a>
                                     </h5>
-                                    <span><i class="fa fa-eye"></i> 19.141 Viewes</span>
+                                    <span><i class="fa fa-eye"></i> {{ $anime->viewers->count() }} Viewes</span>
                                 </div>
                             </div>
                         @endforeach

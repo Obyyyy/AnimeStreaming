@@ -13,7 +13,7 @@ class PageController extends Controller
         $trendingAnimes = Anime::select()->orderBy('title', 'desc')->take(6)->get();
 
         $liveAnimes = Genre::select()->where('name', 'Adventure')->first()->animes->take(6);
-        $forYouAnimes = Genre::select()->where('name', 'Adventure')->first()->animes->take(6);
+        $forYouAnimes = Genre::select()->where('name', 'Adventure')->first()->animes->take(4);
 
         $romance = Genre::select()->where('name', 'Romance')->first()->animes->take(6);
         $adventureAnimes= Genre::select()->where('name', 'Adventure')->first()->animes->take(6);
@@ -25,7 +25,8 @@ class PageController extends Controller
     public function showAnimeByGenres(Genre $genre)
     {
         $animes = $genre->animes;
+        $forYouAnimes = Anime::withCount('viewers')->orderBy('viewers_count', 'desc')->take(4)->get();
 
-        return view('pages.anime-genres', compact('genre', 'animes'));
+        return view('pages.anime-genres', compact('genre', 'animes', 'forYouAnimes'));
     }
 }

@@ -76,6 +76,12 @@
                     <div class="col-lg-2">
                         <div class="header__right d-flex">
                             <ul class="list-unstyled d-flex">
+                                {{-- <form method="POST" action="{{ route('anime.search') }}"
+                                    class="form-inline my-2 my-lg-0">
+                                    @csrf
+                                    <input class="form-control mr-sm-2" name="search" type="search"
+                                        placeholder="Search" aria-label="Search">
+                                </form> --}}
                                 <li>
                                     <a href="#" class="search-switch me-3"><span class="icon_search"></span></a>
                                 </li>
@@ -99,12 +105,15 @@
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item me-3 text-dark"
+                                                href="{{ route('user.followed.animes') }}">
+                                                {{ __('Followed Animes') }}
+                                            </a>
                                             <a class="dropdown-item me-3 text-dark" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
+                                                document.getElementById('logout-form').submit();">
                                                 {{ __('Logout') }}
                                             </a>
-
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                                 class="d-none">
                                                 @csrf
@@ -170,8 +179,9 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch"><i class="icon_close"></i></div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form class="search-model-form" method="POST" action="{{ route('anime.search') }}">
+                @csrf
+                <input type="text" id="search-input" name="search" placeholder="Search here.....">
             </form>
         </div>
     </div>

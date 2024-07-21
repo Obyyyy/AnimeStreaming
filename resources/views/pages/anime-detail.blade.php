@@ -137,7 +137,7 @@
                         @foreach ($similiarAnime as $anime)
                             <div class="product__sidebar__view__item set-bg"
                                 data-setbg="{{ asset('img/' . $anime->image . '') }}">
-                                <div class="ep">18 / ?</div>
+                                <div class="ep">{{ $anime->episodes->count() }} Eps</div>
                                 <div class="view"><i class="fa fa-eye"></i> {{ $anime->viewers->count() }}</div>
                                 <h5><a
                                         href="{{ route('anime.detail', with(['anime' => $anime->slug])) }}">{{ $anime->title }}</a>

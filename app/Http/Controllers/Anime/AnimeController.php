@@ -9,19 +9,18 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use function Laravel\Prompts\select;
 use Illuminate\Support\Facades\Auth;
 
 class AnimeController extends Controller
 {
-    // public function storeComment($user_id, $anime_id, $comments)
-    // {
-    //     Comment::create([
-    //         'user_id' => $user_id,
-    //         'anime_id' => $anime_id,
-    //         'comments' => $comments,
-    //     ]);
-    // }
+    public function storeComment($user_id, $anime_id, $comments)
+    {
+        Comment::create([
+            'user_id' => $user_id,
+            'anime_id' => $anime_id,
+            'comments' => $comments,
+        ]);
+    }
 
     public function detailAnime(Anime $anime)
     {
@@ -47,12 +46,13 @@ class AnimeController extends Controller
 
     public function addComment(Anime $anime, Request $request)
     {
-        // $this->storeComment(Auth::user()->id, $anime->id, $request->comment);
-        Comment::create([
-            'user_id' => Auth::user()->id,
-            'anime_id' => $anime->id,
-            'comments' => $request->comment,
-        ]);
+        $this->storeComment(Auth::user()->id, $anime->id, $request->comment);
+
+        if($request->has('watching'))
+        {
+            return redirect()->route('anime.watching', ['anime' => $anime->slug, 'episode_name' => $request->get('watching')]);
+        }
+
         return redirect()->route('anime.detail', with(['anime' => $anime->slug]));
     }
 
@@ -70,5 +70,14 @@ class AnimeController extends Controller
         $user->followedAnimes()->detach($anime->id);
 
         return redirect()->route('anime.detail', ['anime' => $anime->slug]);
+    }
+
+    public function searchAnime(Request $request)
+    {
+        $anime = $request->search;
+
+        $animeSearched = Anime::where("title", "like", "%$anime%")->get();
+
+        return view('pages.anime-search', ['animes' => $animeSearched, 'search' => $anime]);
     }
 }

@@ -113,7 +113,9 @@
                                     </span>
                                 @enderror --}}
                             </div>
-                            <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
+                            @if (request()->has('redirect_to'))
+                                <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
+                            @endif
                             <button type="submit" class="site-btn">Login Now</button>
                         </form>
                         <a href="#" class="forget_pass">Forgot Your Password?</a>
@@ -122,7 +124,12 @@
                 <div class="col-lg-6">
                     <div class="login__register">
                         <h3>Dont’t Have An Account?</h3>
-                        <a href="{{ route('register') }}" class="primary-btn">Register Now</a>
+                        @if (request()->has('redirect_to'))
+                            <a href="{{ route('register', ['redirect_to' => request()->get('redirect_to')]) }}"
+                                class="primary-btn">Register Now</a>
+                        @else
+                            <a href="{{ route('register') }}" class="primary-btn">Register Now</a>
+                        @endif
                     </div>
                 </div>
             </div>
