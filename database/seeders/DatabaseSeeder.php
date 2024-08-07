@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ViewsSeeder::class,
             EpisodeSeeder::class,
             AnimeGenreSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

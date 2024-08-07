@@ -12,14 +12,11 @@ class PageController extends Controller
         $animes = Anime::withCount('viewers')->orderBy('viewers_count', 'desc')->take(3)->get();
         $trendingAnimes = Anime::select()->orderBy('title', 'desc')->take(6)->get();
 
-        $liveAnimes = Genre::select()->where('name', 'Adventure')->first()->animes->take(6);
+        $liveAnimes = Genre::select()->where('name', 'Action')->first()->animes->take(6);
         $forYouAnimes = Genre::select()->where('name', 'Adventure')->first()->animes->take(4);
-
-        $romance = Genre::select()->where('name', 'Romance')->first()->animes->take(6);
-        $adventureAnimes= Genre::select()->where('name', 'Adventure')->first()->animes->take(6);
         $recentlyAnimes = Anime::select()->latest()->take(6)->get();
 
-        return view('pages.home', compact('animes', 'trendingAnimes', 'adventureAnimes', 'liveAnimes','recentlyAnimes', 'forYouAnimes'));
+        return view('pages.home', compact('animes', 'trendingAnimes', 'liveAnimes','recentlyAnimes', 'forYouAnimes'));
     }
 
     public function showAnimeByGenres(Genre $genre)

@@ -32,6 +32,7 @@ class Anime extends Model
         'comments',
         'viewers',
         'episodes',
+        'genres',
     ];
 
     public function comments(): HasMany
