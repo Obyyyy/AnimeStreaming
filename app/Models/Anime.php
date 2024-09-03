@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -58,5 +59,11 @@ class Anime extends Model
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'anime_genre');
+    }
+
+    public function scopeFilter(Builder $query, array $filters): void {
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            $query->where('title', 'like', '%'.$search.'%');
+        });
     }
 }

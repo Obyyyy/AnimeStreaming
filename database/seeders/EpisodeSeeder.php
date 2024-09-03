@@ -23,7 +23,7 @@ class EpisodeSeeder extends Seeder
         {
             $currentEpisode = Episode::where('anime_id', $anime->id)->max('episode_name') ?: 0;
 
-            for ($i = 1; $i <= rand(1, 5); $i++) {
+            for ($i = 1; $i <= rand(4, 6); $i++) {
                 Episode::factory()->create([
                     'anime_id' => $anime->id,
                     'episode_name' => ++$currentEpisode,

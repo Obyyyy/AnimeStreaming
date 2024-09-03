@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Episode extends Model
 {
@@ -22,5 +23,12 @@ class Episode extends Model
     public function anime(): BelongsTo
     {
         return $this->belongsTo(Anime::class, 'anime_id', 'id');
+    }
+
+    public function scopeFilter(Builder $query, array $filters): void {
+        $query->when($filters['anime'] ?? false, function($query, $anime) {
+            $query->whereHas('anime', fn ($query) => $query->where('slug', $anime)
+            );
+        });
     }
 }

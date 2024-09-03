@@ -26,4 +26,12 @@ class PageController extends Controller
 
         return view('pages.anime-genres', compact('genre', 'animes', 'forYouAnimes'));
     }
+
+    public function showRecentlyAnimes()
+    {
+        $recentlyAnimes = Anime::orderBy('updated_at', 'desc')->get();
+        $forYouAnimes = Anime::withCount('viewers')->orderBy('viewers_count', 'desc')->take(4)->get();
+
+        return view('pages.anime-recently', compact('recentlyAnimes', 'forYouAnimes'));
+    }
 }

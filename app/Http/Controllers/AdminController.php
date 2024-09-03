@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreAdminRequest;
-use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Anime;
 use App\Models\Episode;
 use App\Models\Genre;
@@ -52,7 +50,7 @@ class AdminController extends Controller
 
     public function getAdmins()
     {
-        $admins = Admin::latest()->paginate(10);
+        $admins = Admin::filter(request(['search']))->latest()->paginate(10)->withQueryString()->onEachSide(1);
 
         return view('pages.Admin.admins.admins', compact('admins'));
     }
@@ -69,12 +67,21 @@ class AdminController extends Controller
             'email' => 'email|required',
             'password' =>'required|min:8|max:12',
         ]);
-        Admin::create([
+        $emailExists = Admin::where('email', $request->email)->exists();
+        if($emailExists) {
+            return redirect()->route('admin.admins')->with('error', 'Give different email');
+        }
+
+        $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return redirect()->route('admin.admins')->with('success', 'Admin added successfully');
+
+        if($admin) {
+            return redirect()->route('admin.admins')->with('success', 'Admin added successfully');
+        }
+        return redirect()->route('admin.admins')->with('error', 'Error to adding Admin');
     }
 
     public function formEditAdmin(Admin $admin)
@@ -89,13 +96,22 @@ class AdminController extends Controller
             'email' => 'email|required',
             'password' =>'required|min:8|max:12',
         ]);
+        $emailExists = Admin::where('email', $request->email)->exists();
+        if($emailExists) {
+            return redirect()->route('admin.admins')->with('error', 'Give different email');
+        }
         $admin = Admin::find($id);
-        $admin->update([
+        $sucess = $admin->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'updated_at' => now(),
         ]);
-        return redirect()->route('admin.admins')->with('success', 'Admin updated successfully');
+
+        if($sucess) {
+            return redirect()->route('admin.admins')->with('success', 'Admin updated successfully');
+        }
+        return redirect()->route('admin.admins')->with('error', 'Error to updated Admin');
     }
 
     public function deleteAdmin(Admin $admin)
@@ -103,14 +119,5 @@ class AdminController extends Controller
         $admin->delete();
 
         return redirect()->route('admin.admins')->with('success', 'Admin deleted successfully');
-    }
-
-
-    // Animes
-    public function getAnimes()
-    {
-        $animes = Anime::latest()->paginate(10);
-
-        return view('pages.Admin.animes.animes', compact('animes'));
     }
 }

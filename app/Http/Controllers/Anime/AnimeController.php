@@ -41,7 +41,10 @@ class AnimeController extends Controller
             }
         }
 
-        return view('pages/anime-detail', compact('anime', 'similiarAnime', 'comments'));
+        $hour = floor($anime->duration / 60);
+        $minutes = $anime->duration % 60;
+
+        return view('pages/anime-detail', compact('anime', 'similiarAnime', 'comments', 'hour', 'minutes'));
     }
 
     public function addComment(Anime $anime, Request $request)

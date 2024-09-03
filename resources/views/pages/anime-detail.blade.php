@@ -55,7 +55,8 @@
                                                 @endforeach
                                             </li>
 
-                                            <li><span>Duration:</span> {{ $anime->duration }} min/ep</li>
+                                            <li><span>Duration:</span> {{ $hour > 0 ? $hour . ' hr' : '' }}
+                                                {{ $minutes }} min / eps</li>
                                             <li><span>Quality:</span> {{ $anime->quality }}</li>
                                             <li><span>Views:</span> {{ $anime->viewers->count() }}</li>
                                         </ul>
@@ -90,8 +91,13 @@
                                         onclick="document.getElementById('followForm').submit(); return false;"
                                         class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
                                 @endif
-                                <a href="{{ route('anime.watching', ['anime' => $anime->slug, 'episode_name' => $anime->episodes->first()->episode_name]) }}"
-                                    class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                @if ($anime->episodes->first())
+                                    <a href="{{ route('anime.watching', ['anime' => $anime->slug, 'episode_name' => $anime->episodes->first()->episode_name]) }}"
+                                        class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                @else
+                                    <a href="#" class="watch-btn"><span>Watch Now</span> <i
+                                            class="fa fa-angle-right"></i></a>
+                                @endif
                             </div>
                         </div>
                     </div>
