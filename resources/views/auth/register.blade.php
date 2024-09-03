@@ -126,6 +126,10 @@
                                     required>
                                 <span class="icon_lock"></span>
                             </div>
+                            @if (request()->has('redirect_to'))
+                                <input type="hidden" name="redirect_to" value="{{ request('redirect_to') }}">
+                            @endif
+
                             <button type="submit" class="site-btn">Register Now</button>
                         </form>
                         <h5>Already have an account? <a href="#">Log In!</a></h5>

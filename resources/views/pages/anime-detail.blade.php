@@ -22,8 +22,8 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="anime__details__pic set-bg" data-setbg="{{ asset('img/' . $anime->image . '') }}">
-                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
-                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                            <div class="comment"><i class="fa fa-comments"></i> {{ $anime->comments->count() }}</div>
+                            <div class="view"><i class="fa fa-eye"></i> {{ $anime->viewers->count() }}</div>
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -47,17 +47,33 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
-                                            <li><span>Genre:</span> {{ $anime->genres }}</li>
+                                            <li><span>Genre:</span>
+                                                @foreach ($anime->genres as $genre)
+                                                    {{ $genre->name }}@if (!$loop->last)
+                                                        ,
+                                                    @endif
+                                                @endforeach
+                                            </li>
 
-                                            <li><span>Duration:</span> {{ $anime->duration }} min/ep</li>
+                                            <li><span>Duration:</span> {{ $hour > 0 ? $hour . ' hr' : '' }}
+                                                {{ $minutes }} min / eps</li>
                                             <li><span>Quality:</span> {{ $anime->quality }}</li>
-                                            <li><span>Views:</span> 131,541</li>
+                                            <li><span>Views:</span> {{ $anime->viewers->count() }}</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="anime__details__btn">
-                                @if (Auth::user()->followedAnimes->contains($anime->id))
+                                @if (!Auth::user())
+                                    <form id="followForm" action="{{ route('anime.follow', $anime->slug) }}"
+                                        method="POST">
+                                        @csrf
+                                        <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
+                                    </form>
+                                    <a href="#"
+                                        onclick="document.getElementById('followForm').submit(); return false;"
+                                        class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
+                                @elseif (Auth::user()->followedAnimes->contains($anime->id))
                                     <form id="unfollowForm" action="{{ route('anime.unfollow', $anime->slug) }}"
                                         method="POST">
                                         @csrf
@@ -75,8 +91,13 @@
                                         onclick="document.getElementById('followForm').submit(); return false;"
                                         class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>
                                 @endif
-                                <a href="anime-watching.html" class="watch-btn"><span>Watch Now</span> <i
-                                        class="fa fa-angle-right"></i></a>
+                                @if ($anime->episodes->first())
+                                    <a href="{{ route('anime.watching', ['anime' => $anime->slug, 'episode_name' => $anime->episodes->first()->episode_name]) }}"
+                                        class="watch-btn"><span>Watch Now</span> <i class="fa fa-angle-right"></i></a>
+                                @else
+                                    <a href="#" class="watch-btn"><span>Watch Now</span> <i
+                                            class="fa fa-angle-right"></i></a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -108,6 +129,7 @@
                         <form action="{{ route('anime.add.comment', with(['anime' => $anime->slug])) }}"
                             method="POST">
                             @csrf
+                            <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
                             <textarea placeholder="Your Comment" name="comment"></textarea>
                             <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
                         </form>
@@ -121,8 +143,8 @@
                         @foreach ($similiarAnime as $anime)
                             <div class="product__sidebar__view__item set-bg"
                                 data-setbg="{{ asset('img/' . $anime->image . '') }}">
-                                <div class="ep">18 / ?</div>
-                                <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                                <div class="ep">{{ $anime->episodes->count() }} Eps</div>
+                                <div class="view"><i class="fa fa-eye"></i> {{ $anime->viewers->count() }}</div>
                                 <h5><a
                                         href="{{ route('anime.detail', with(['anime' => $anime->slug])) }}">{{ $anime->title }}</a>
                                 </h5>

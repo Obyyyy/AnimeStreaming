@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Anime;
 
+use App\Models\User;
 use App\Models\Anime;
+use App\Models\Genre;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
-use function Laravel\Prompts\select;
+use Illuminate\Support\Facades\Auth;
 
 class AnimeController extends Controller
 {
@@ -24,18 +24,37 @@ class AnimeController extends Controller
 
     public function detailAnime(Anime $anime)
     {
-        $similiarAnime = Anime::select()->where('genres', $anime->genres)->where('id', '!=', $anime->id)->take(4)->get();
+        $genreAnime = $anime->genres->first();
+        $similiarAnime = Genre::select()->where('name', $genreAnime->name)->first()->animes->take(4);
+
         $comments = $anime->comments;
-        return view('pages.anime-detail', compact('anime', 'similiarAnime', 'comments'));
+
+        if(Auth::check())
+        {
+            $user = User::find(Auth::user()->id);
+            if(!$user->viewedAnimes->contains($anime->id))
+            {
+                $user->viewedAnimes()->attach($anime->id, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        $hour = floor($anime->duration / 60);
+        $minutes = $anime->duration % 60;
+
+        return view('pages/anime-detail', compact('anime', 'similiarAnime', 'comments', 'hour', 'minutes'));
     }
 
     public function addComment(Anime $anime, Request $request)
     {
-        if(!Auth::user()) {
-            return redirect()->route('login');
-        }
-
         $this->storeComment(Auth::user()->id, $anime->id, $request->comment);
+
+        if($request->has('watching'))
+        {
+            return redirect()->route('anime.watching', ['anime' => $anime->slug, 'episode_name' => $request->get('watching')]);
+        }
 
         return redirect()->route('anime.detail', with(['anime' => $anime->slug]));
     }
@@ -43,10 +62,6 @@ class AnimeController extends Controller
     public function followAnime (Anime $anime)
     {
         $user = User::find(Auth::user()->id);
-        if (!$user) {
-            return redirect()->route('login');
-        }
-
         $user->followedAnimes()->attach($anime->id);
 
         return redirect()->route('anime.detail', with(['anime' => $anime->slug]));
@@ -55,14 +70,17 @@ class AnimeController extends Controller
     public function unfollowAnime (Anime $anime)
     {
         $user = User::find(Auth::user()->id);
-    if (!$user) {
-            return redirect()->route('login');
-        }
-
-        // User::first()->followedAnime()->get();
-        // $user->followedAnimes()->detach($anime->id);
         $user->followedAnimes()->detach($anime->id);
 
         return redirect()->route('anime.detail', ['anime' => $anime->slug]);
+    }
+
+    public function searchAnime(Request $request)
+    {
+        $anime = $request->search;
+
+        $animeSearched = Anime::where("title", "like", "%$anime%")->get();
+
+        return view('pages.anime-search', ['animes' => $animeSearched, 'search' => $anime]);
     }
 }

@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Anime::class, 'anime_user');
     }
+
+    public function viewedAnimes()
+    {
+        return $this->belongsToMany(Anime::class, 'anime_user_views');
+    }
 }

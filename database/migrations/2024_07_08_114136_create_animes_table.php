@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('studios');
             $table->string('date_aired');
             $table->string('status');
-            $table->string('genres');
             $table->string('duration');
             $table->string('quality');
             $table->timestamps();

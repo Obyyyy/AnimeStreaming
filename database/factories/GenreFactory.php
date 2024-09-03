@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class GenreFactory extends Factory
      */
     public function definition(): array
     {
+        $genre = fake()->word(1);
         return [
-            //
+            'name' => $genre,
+            'slug' => Str::slug($genre),
         ];
     }
 }

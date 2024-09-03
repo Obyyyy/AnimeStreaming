@@ -27,9 +27,9 @@ class AnimeFactory extends Factory
             'studios' => fake()->randomElement(['MAPPA', 'Ufotable', 'A-1 Pictures']),
             'date_aired' => fake()->dateTimeThisYear(),
             'status' => fake()->randomElement(['Completed', 'Ongoing']),
-            'genres' => fake()->randomElement(['Action', 'Adventure', 'Fantasy', 'Magic', 'Romance']),
             'duration' => '24',
             'quality' => fake()->randomElement(['HD', 'Camera', 'Full HD', 'BD']),
+            // 'total_views' => fake()->numberBetween(0, 50000),
         ];
     }
 }
